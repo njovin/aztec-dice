@@ -25,6 +25,14 @@ var vue = new Vue({
         this.player_name = null;
         return false;
     },
+    getCityPopulation: function(city) {
+        console.log(city);
+        var squares = [];
+        while(squares.length < city.men_required) {
+            squares.push('O');
+        }
+        return squares;
+    },
     getGoodIncrements: function(good) {
         var increments = [0];
         var total = good.increment;

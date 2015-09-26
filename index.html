@@ -56,16 +56,40 @@
             <!-- GOODS -->   
             <div v-show="game && game.turn">
                 <div class="row">
-                    <table>
-                        <tr v-repeat='good : game.goods'>
-                            <td>{{good.display_name}}</td>
-                            <td 
-                                class="{{good.code}}"
-                                v-repeat="increment in getGoodIncrements(good)"
-                                v-class="selected: (game.shownPlayer().goods[good.code] == increment)"
-                                >{{increment}}</td>
-                        </tr>                     
-                    </table>
+                    <div class='six columns'>
+                        <table>
+                            <tr v-repeat='good : game.goods'>
+                                <td>{{good.display_name}}</td>
+                                <td 
+                                    class="{{good.code}}"
+                                    v-repeat="increment in getGoodIncrements(good)"
+                                    v-class="selected: (game.shownPlayer().goods[good.code] == increment)"
+                                    >{{increment}}</td>
+                            </tr>                     
+                        </table>
+                    </div>
+                    <div class='six columns'>
+                        <table class='u-full-width'>
+                            <tbody>
+                                <tr v-repeat="city : game.shownPlayer().cities">
+                                    <td
+                                        v-class="'city-complete': city.men_required == city.men_filled"
+                                        style="padding-left: 5px"
+                                    >
+                                        <span v-show="(city.men_required == city.men_filled) || game.turn.men < 1">
+                                            City {{$index+1}}
+                                        </span>
+                                        <button v-show="(city.men_required != city.men_filled) && game.turn.men > 0">
+                                            + City {{$index+1}}
+                                        </button>                                        
+                                    </td>
+                                    <td 
+                                        v-repeat="square in getCityPopulation(city)"
+                                        >{{square}}</td>                                
+                                </tr>         
+                            </tbody>            
+                        </table>                        
+                    </div>
                 </div>
             </div>
             <!-- FOOD -->
@@ -84,15 +108,20 @@
 
             <!-- DICE -->   
             <div v-show="game && game.turn && (game.active_player_index == game.shown_player_index)"> 
-                <div class="row">
-                    <div class="two columns">
-
+                <div class="row" v-show="game.turn.phase == 'rolling'">
+                    <div class="twelve columns">
                         <button 
                             class="button button-primary" 
                             type="button" 
                             v-on="click: game.turn.roll" 
                             v-attr="disabled: (game.turn.rolls_remaining == 0)">Roll
                             </button>
+                        <button 
+                            class="button button-primary" 
+                            type="button" 
+                            v-on="click: game.turn.finishRoll" 
+                            >Finish Roll
+                            </button>                            
                     </div>    
                 </div>
                 <div class="row">
@@ -108,6 +137,7 @@
                         </button>
                     </div>    
                 </div>
+                
             </div>
 
             <!-- LOG -->

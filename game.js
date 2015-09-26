@@ -25,9 +25,17 @@ function Game() {
 }
 function Turn(player,log) {
     this.rolls_remaining = 3;
+    this.phase = 'rolling';
     this.dice = [];
+    
+    // resources gained this turn
+    this.food = 0;
+    this.goods = 0;
+    this.skulls = 0;
+    this.men = 0;
+
     this.log = log;
-    while(this.dice.length < player.city_count) {
+    while(this.dice.length < player.cityCount()) {
         this.dice.push(new Dice());
     }    
     this.roll = function() {
@@ -61,11 +69,19 @@ function Dice() {
 };
 function Player(name) {
     this.name = name;
-    this.city_count = 3;
     this.food_count = 3;
     this.disaster_count = 0;
     this.monuments = [];
     this.developments = [];
+    this.cities = [
+        {men_required: 0, men_filled: 0},
+        {men_required: 0, men_filled: 0},
+        {men_required: 0, men_filled: 0},
+        {men_required: 3, men_filled: 0},
+        {men_required: 4, men_filled: 0},
+        {men_required: 5, men_filled: 0},
+        {men_required: 6, men_filled: 0},
+    ];
     this.goods = {
         'spear': 0,
         'fabric': 0,
@@ -73,6 +89,15 @@ function Player(name) {
         'stone': 0,
         'wood': 0,
     };
+    this.cityCount = function() {
+        var city_count = 0;
+        for(i in this.cities) {
+            if(this.cities[i].men_required == this.cities[i].men_filled) {
+                city_count++;
+            }
+        }
+        return city_count;
+    }.bind(this)
 };
 goods = [
         {

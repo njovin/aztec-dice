@@ -38,6 +38,10 @@
     font-size: 2rem;
     margin: 10px 0 10px 0;
 }
+.city-complete {
+    background-color: green;
+    color: #fff;
+}
 .food-info {
     background-color: #39871D;
     color: white;
