@@ -3,8 +3,10 @@ var vue = new Vue({
   data: {
     game: null,
     player_name: null,
+    developments: developments
   }, 
   ready: function() {
+
     this.game = new Game();
     this.game.players.push(new Player('Nathan'));
     this.game.players.push(new Player('Bob'));

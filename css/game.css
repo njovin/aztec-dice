@@ -37,6 +37,7 @@
     padding: 10px;
     font-size: 2rem;
     margin: 10px 0 10px 0;
+    float: left;
 }
 .city-complete {
     background-color: green;
@@ -49,14 +50,16 @@
     padding: 10px;
     margin: 10px 10px 10px 0;
     font-size: 2rem;
+    float: left;
 }
 .men-info, .coin-info {
     background-color: blue;
     color: white;
     font-weight: bold;
     padding: 10px;
-    margin: 10px 10px 10px 0;
+    margin: 10px 10px 10px 10px;
     font-size: 2rem;
+    float: left;
 }
 .dice {
     margin-right: 10px;

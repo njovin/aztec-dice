@@ -70,6 +70,16 @@ function Turn(player,log,resolveDisasters) {
     while(this.dice.length < player.cityCount()) {
         this.dice.push(new Dice());
     }    
+    this.removeMenFromCity = function(city) {
+        city.men_added_this_turn--;
+        this.men++;
+        city.men_filled--;
+    }
+    this.assignMenToCity = function(city) {
+        city.men_added_this_turn++;
+        this.men--;
+        city.men_filled++;
+    }
     this.roll = function() {
         if(this.rolls_remaining < 1) return;
         var dice_count = 0;
@@ -156,13 +166,13 @@ function Player(name) {
     this.monuments = [];
     this.developments = [];
     this.cities = [
-        {men_required: 0, men_filled: 0},
-        {men_required: 0, men_filled: 0},
-        {men_required: 0, men_filled: 0},
-        {men_required: 3, men_filled: 0},
-        {men_required: 4, men_filled: 0},
-        {men_required: 5, men_filled: 0},
-        {men_required: 6, men_filled: 0},
+        {men_required: 0, men_filled: 0,men_added_this_turn: 0},
+        {men_required: 0, men_filled: 0,men_added_this_turn: 0},
+        {men_required: 0, men_filled: 0,men_added_this_turn: 0},
+        {men_required: 3, men_filled: 0,men_added_this_turn: 0},
+        {men_required: 4, men_filled: 0,men_added_this_turn: 0},
+        {men_required: 5, men_filled: 0,men_added_this_turn: 0},
+        {men_required: 6, men_filled: 0,men_added_this_turn: 0},
     ];
     this.goods = {
         'spear': 0,
@@ -223,3 +233,18 @@ goods = [
         },
 
 ];
+developments = [
+    { cost: 10, name: 'Leadership', points:   2, description: 'Re-roll one die' },
+    { cost: 10, name: 'Irrigation', points:   2, description: 'Drought has no effect' },
+    { cost: 15, name: 'Agriculture', points:  3, description: '+1 Food/Food die' },
+    { cost: 15, name: 'Quarrying', points:    3, description: '+1 Stone when producing Stone' },
+    { cost: 15, name: 'Medicine', points:     3, description: 'Pestilence has no effect' },
+    { cost: 20, name: 'Coinage', points:  4, description: '1 Money Die = 12 Coins' },
+    { cost: 20, name: 'Caravans', points:     4, description: 'No goods limit' },
+    { cost: 20, name: 'Religion', points:     6, description: 'Revolt effects opponents' },
+    { cost: 30, name: 'Granaries', points:    6, description: 'Change Food to 4 coins' },
+    { cost: 30, name: 'Masonry', points:  6, description: '+1 Worker/Worker Die' },
+    { cost: 40, name: 'Engineering', points:  6, description: 'Change Stone to 3 Workers' },
+    { cost: 50, name: 'Architecture', points:     8, description: '1 additional point for every monument' },
+    { cost: 60, name: 'Empire', points:   8, description: '1 additional point for every city' }
+    ];

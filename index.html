@@ -56,19 +56,34 @@
             <!-- GOODS -->   
             <div v-show="game && game.turn">
                 <div class="row">
-                    <div class='six columns'>
-                        <table>
-                            <tr v-repeat='good : game.goods'>
-                                <td>{{good.display_name}}</td>
-                                <td 
-                                    class="{{good.code}}"
-                                    v-repeat="increment in getGoodIncrements(good)"
-                                    v-class="selected: (game.shownPlayer().goods[good.code] == $index)"
-                                    >{{increment}}</td>
-                            </tr>                     
+                    <div class='seven columns'>
+                        <table class='u-full-width'>
+                            <tbody>
+                                <tr v-repeat='good : game.goods'>
+                                    <td>{{good.display_name}}</td>
+                                    <td 
+                                        class="{{good.code}}"
+                                        v-repeat="increment in getGoodIncrements(good)"
+                                        v-class="selected: (game.shownPlayer().goods[good.code] == $index)"
+                                        >{{increment}}</td>
+                                </tr>         
+                            </tbody>            
                         </table>
+
+                        <div class='food-info'>
+                            Food: {{ game.shownPlayer().food_count }}
+                        </div>
+                        <div class='disaster-info'>
+                            Disasters: {{ game.shownPlayer().disaster_count }}
+                        </div>
+                        <div class='men-info'>
+                            Men: {{ game.turn.men }}
+                        </div>
+                        <div class='coin-info'>
+                            Coin: {{ game.turn.coin }}
+                        </div>
                     </div>
-                    <div class='six columns'>
+                    <div class='five columns'>
                         <table class='u-full-width'>
                             <tbody>
                                 <tr v-repeat="city : game.shownPlayer().cities">
@@ -76,32 +91,27 @@
                                         v-class="'city-complete': city.men_required == city.men_filled"
                                         style="padding-left: 5px"
                                     >
-                                        <span v-show="(city.men_required == city.men_filled) || game.turn.men < 1">
-                                            City {{$index+1}}
-                                        </span>
-                                        <button v-show="(city.men_required != city.men_filled) && game.turn.men > 0">
-                                            + City {{$index+1}}
-                                        </button>                                        
+                                        City {{$index+1}}
+                                        <button 
+                                            v-on="click: game.turn.assignMenToCity(city)"
+                                            v-show="(city.men_required != city.men_filled) && game.turn.men > 0">
+                                            +
+                                        </button>   
+                                        <button 
+                                            v-on="click: game.turn.removeMenFromCity(city)"
+                                            v-show="(city.men_added_this_turn > 0)">
+                                            -
+                                        </button>                                                                              
                                     </td>
                                     <td 
                                         v-repeat="square in getCityPopulation(city)"
-                                        >{{square}}</td>                                
+                                        >
+                                        <span v-show="$index < city.men_filled">X</span>
+                                        <span v-show="$index >= city.men_filled">0</span>
+                                    </td>                                
                                 </tr>         
                             </tbody>            
                         </table>                        
-                    </div>
-                </div>
-            </div>
-            <!-- FOOD -->
-            <div class='row'>
-                <div class='four columns '>
-                    <div class='food-info'>
-                        Food: {{ game.shownPlayer().food_count }}
-                    </div>
-                </div>
-                <div class='four columns '>
-                    <div class='disaster-info'>
-                        Disasters: {{ game.shownPlayer().disaster_count }}
                     </div>
                 </div>
             </div>
@@ -161,21 +171,30 @@
                     </div>    
                 </div>                
             </div>
-
-            <!-- MEN & COIN -->
-            <div class='row'>
-                <div class='four columns '>
-                    <div class='men-info'>
-                        Men: {{ game.turn.men }}
-                    </div>
+            <!-- LOG -->
+            <div class="row">                
+                <div class="twelve columns" >            
+                    <table class='u-full-width'>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Cost</th>
+                                <th>Name</th>
+                                <th>Points</th>
+                                <th>Description</th>
+                        </thead>
+                        <tbody>
+                            <tr v-repeat='development : developments'>
+                                <td><button type='button'>Buy</button></td>
+                                <td>{{development.cost}}</td>
+                                <td>{{development.name}}</td>
+                                <td>{{development.points}}</td>
+                                <td>{{development.description}}</td>
+                            </tr>         
+                        </tbody>            
+                    </table>   
                 </div>
-                <div class='four columns '>
-                    <div class='coin-info'>
-                        Coin: {{ game.turn.coin }}
-                    </div>
-                </div>
-            </div>
-
+            </div>         
             <!-- LOG -->
             <div class="row">                
                 <div class="twelve columns" >
