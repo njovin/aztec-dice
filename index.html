@@ -17,7 +17,13 @@
 
 </head>
 <body id='body'>
-    <div class="container" style='margin-top: 50px'>
+    <div class="container" style='margin-top: 10px'>
+        <div class="row" v-show="game && game.turn">
+            <div class="two columns" v-repeat="player : game.players">
+                <button class="button" type="button" v-class="'button-primary': $index == game.active_player_index" v-on="click: game.shown_player_index = $index">{{player.name}}</button>
+            </div>    
+        </div>
+
         <div class="row" v-show="!game">
             <div class="four columns">
                 <button class="button-primary" type="button" v-on="click: newGame">New Game</button>
@@ -44,19 +50,75 @@
         <div v-show="game.turn">
             <div class="row">
                 <div class="twelve columns">
-                    <h4>Player: {{ game.activePlayer().name }}</h4>
+                    <h5>Player: {{ game.shownPlayer().name }} <span v-show="game.shown_player_index == game.active_player_index">(Active)</span></h5>
                 </div>    
-            </div>        
-            <div class="row">
-                <div class="two columns">
-                    <button class="button button-primary" type="button" v-on="click: game.turn.roll" v-attr="disabled: (game.turn.rolls_remaining == 0)">Roll</button>
-                </div>    
-            </div>
-            <div class="row">
-                <div class="two columns" v-repeat="die: game.turn.dice" class='text-align: center'>
-                    <button class="button" type="button"  v-class="'button-primary': die.held,'button-danger': (die.shown_side == 'skull')" v-on="click: die.toggleHold()">{{ die.shown_side }}</button>
+            </div>             
+            <!-- GOODS -->   
+            <div v-show="game && game.turn">
+                <div class="row">
+                    <table>
+                        <tr v-repeat='good : game.goods'>
+                            <td>{{good.display_name}}</td>
+                            <td 
+                                class="{{good.code}}"
+                                v-repeat="increment in getGoodIncrements(good)"
+                                v-class="selected: (game.shownPlayer().goods[good.code] == increment)"
+                                >{{increment}}</td>
+                        </tr>                     
+                    </table>
                 </div>
             </div>
+            <!-- FOOD -->
+            <div class='row'>
+                <div class='four columns '>
+                    <div class='food-info'>
+                        Food: {{ game.shownPlayer().food_count }}
+                    </div>
+                </div>
+                <div class='four columns '>
+                    <div class='disaster-info'>
+                        Disasters: {{ game.shownPlayer().disaster_count }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- DICE -->   
+            <div v-show="game && game.turn && (game.active_player_index == game.shown_player_index)"> 
+                <div class="row">
+                    <div class="two columns">
+
+                        <button 
+                            class="button button-primary" 
+                            type="button" 
+                            v-on="click: game.turn.roll" 
+                            v-attr="disabled: (game.turn.rolls_remaining == 0)">Roll
+                            </button>
+                    </div>    
+                </div>
+                <div class="row">
+                    <div class="twelve columns">
+                        <button 
+                            v-repeat="die in game.turn.dice" 
+                            v-attr="disabled: (game.turn.rolls_remaining == 0)"
+                            class="button dice" 
+                            type="button"  
+                            v-class="'button-primary': die.held,'button-danger': (die.shown_side == 'skull')" 
+                            v-on="click: die.toggleHold()">
+                            {{ die.shown_side }}
+                        </button>
+                    </div>    
+                </div>
+            </div>
+
+            <!-- LOG -->
+            <div class="row">                
+                <div class="twelve columns" >
+                    <h5>Log</h5>
+                    <textarea class="u-full-width" v-model='log_text' style="height: 100px">
+
+                    </textarea>
+                </div>
+            </div>            
         </div>
     </div>
 

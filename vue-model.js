@@ -2,13 +2,18 @@ var vue = new Vue({
   el: '#body',
   data: {
     game: null,
-    player_name: null
+    player_name: null,
   }, 
   ready: function() {
     this.game = new Game();
     this.game.players.push(new Player('Nathan'));
     this.game.players.push(new Player('Bob'));
     this.game.start();
+  },
+  computed: {
+    log_text: function() {
+        return this.game.log_items.join("\n");
+    }
   },
   methods: {
     newGame: function() {
@@ -20,12 +25,21 @@ var vue = new Vue({
         this.player_name = null;
         return false;
     },
-    roll: function() {
-        for(index in this.dice) {
-            if(!this.dice[index].held)
-                this.dice[index].roll();
+    getGoodIncrements: function(good) {
+        var increments = [0];
+        var total = good.increment;
+        while(increments.length < good.max_count) {
+            increments.push(total);
+            total += good.increment * (increments.length+1);
         }
-    }
+        return increments;
+    }    
+    // roll: function() {
+    //     for(index in this.dice) {
+    //         if(!this.dice[index].held)
+    //             this.dice[index].roll();
+    //     }
+    // }
   }
 
 })

@@ -5,3 +5,47 @@
     background-color: silver !important;
     border: none;
 }
+.spear.selected {
+    color: white; 
+    font-weight: bold;
+    background-color: #CE4517;
+}
+.fabric.selected {
+    color: white; 
+    font-weight: bold;
+    background-color: #09437A;
+}
+.ceramic.selected {
+    color: white; 
+    font-weight: bold;
+    background-color: #8F1B1C;
+}
+.stone.selected {
+    color: white; 
+    font-weight: bold;
+    background-color: #6B7474;
+}
+.wood.selected {
+    color: white; 
+    font-weight: bold;
+    background-color: #2E2633;
+}
+.disaster-info {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    font-size: 2rem;
+    margin: 10px 0 10px 0;
+}
+.food-info {
+    background-color: #39871D;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    margin: 10px 10px 10px 0;
+    font-size: 2rem;
+}
+.dice {
+    margin-right: 10px;
+}
