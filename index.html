@@ -50,7 +50,7 @@
         <div v-show="game.turn">
             <div class="row">
                 <div class="twelve columns">
-                    <h5>Player: {{ game.shownPlayer().name }} <span v-show="game.shown_player_index == game.active_player_index">(Active)</span></h5>
+                    <h5>Player: {{ game.shownPlayer().name }} <span v-show="game.shown_player_index == game.active_player_index">(Active: {{game.turn.phase}})</span></h5>
                 </div>    
             </div>             
             <!-- GOODS -->   
@@ -63,7 +63,7 @@
                                 <td 
                                     class="{{good.code}}"
                                     v-repeat="increment in getGoodIncrements(good)"
-                                    v-class="selected: (game.shownPlayer().goods[good.code] == increment)"
+                                    v-class="selected: (game.shownPlayer().goods[good.code] == $index)"
                                     >{{increment}}</td>
                             </tr>                     
                         </table>
@@ -114,11 +114,12 @@
                             class="button button-primary" 
                             type="button" 
                             v-on="click: game.turn.roll" 
-                            v-attr="disabled: (game.turn.rolls_remaining == 0)">Roll
+                            v-attr="disabled: (game.turn.rolls_remaining == 0 || game.turn.phase != 'rolling')">Roll
                             </button>
                         <button 
                             class="button button-primary" 
                             type="button" 
+                            v-attr="disabled: game.turn.phase != 'rolling'"
                             v-on="click: game.turn.finishRoll" 
                             >Finish Roll
                             </button>                            
@@ -131,13 +132,48 @@
                             v-attr="disabled: (game.turn.rolls_remaining == 0)"
                             class="button dice" 
                             type="button"  
-                            v-class="'button-primary': die.held,'button-danger': (die.shown_side == 'skull')" 
+                            v-class="'button-primary': die.held,'button-danger': (die.shown_side == '1xSkull + 2xGood')" 
                             v-on="click: die.toggleHold()">
                             {{ die.shown_side }}
                         </button>
                     </div>    
                 </div>
-                
+                <div class="row">
+                    <div class="twelve columns">
+                        <span v-repeat="die : getChoiceDice()">
+                            <button 
+                                class="button dice" 
+                                type="button"  
+                                v-class="'button-primary': die.choice == 'men'" 
+                                v-attr="disabled: game.turn.phase != 'rolling'"
+                                v-on="click: die.choice = 'men'">
+                                Men
+                            </button>
+                            <button 
+                                class="button dice" 
+                                type="button"  
+                                v-class="'button-primary': die.choice == 'food'" 
+                                v-attr="disabled: game.turn.phase != 'rolling'"
+                                v-on="click: die.choice = 'food'">
+                                Food
+                            </button>                            
+                        </span>
+                    </div>    
+                </div>                
+            </div>
+
+            <!-- MEN & COIN -->
+            <div class='row'>
+                <div class='four columns '>
+                    <div class='men-info'>
+                        Men: {{ game.turn.men }}
+                    </div>
+                </div>
+                <div class='four columns '>
+                    <div class='coin-info'>
+                        Coin: {{ game.turn.coin }}
+                    </div>
+                </div>
             </div>
 
             <!-- LOG -->

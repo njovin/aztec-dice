@@ -5,10 +5,10 @@ var vue = new Vue({
     player_name: null,
   }, 
   ready: function() {
-    // this.game = new Game();
-    // this.game.players.push(new Player('Nathan'));
-    // this.game.players.push(new Player('Bob'));
-    // this.game.start();
+    this.game = new Game();
+    this.game.players.push(new Player('Nathan'));
+    this.game.players.push(new Player('Bob'));
+    this.game.start();
   },
   computed: {
     log_text: function() {
@@ -26,7 +26,6 @@ var vue = new Vue({
         return false;
     },
     getCityPopulation: function(city) {
-        console.log(city);
         var squares = [];
         while(squares.length < city.men_required) {
             squares.push('O');
@@ -41,7 +40,17 @@ var vue = new Vue({
             total += good.increment * (increments.length+1);
         }
         return increments;
-    }    
+    },
+    getChoiceDice: function() {
+        choice_dice = [];
+        for(i in this.game.turn.dice){
+            if(this.game.turn.dice[i].shown_side == '2xFoodOr2xMen') {
+                choice_dice.push(this.game.turn.dice[i]);
+            }
+        }
+        console.log(choice_dice);
+        return choice_dice;
+    }
     // roll: function() {
     //     for(index in this.dice) {
     //         if(!this.dice[index].held)
