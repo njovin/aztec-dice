@@ -5,10 +5,10 @@ var vue = new Vue({
     player_name: null,
   }, 
   ready: function() {
-    this.game = new Game();
-    this.game.players.push(new Player('Nathan'));
-    this.game.players.push(new Player('Bob'));
-    this.game.start();
+    // this.game = new Game();
+    // this.game.players.push(new Player('Nathan'));
+    // this.game.players.push(new Player('Bob'));
+    // this.game.start();
   },
   computed: {
     log_text: function() {
